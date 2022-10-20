@@ -1,0 +1,218 @@
+from typing import Any
+
+
+# klasa Node będzie reprezentacją węzła
+class Node:
+    value: Any
+    next: 'Node'
+
+
+# klasa LinkedList będzie reprezentacją listy jednokierunkowej
+class LinkedList:
+    head: Node
+    tail: Node
+
+    def __init__(self) -> None:
+        self.head = None
+        self.tail = None
+
+    # umieszcza nowy węzeł na początku listy
+    def push(self, value: Any) -> None:
+        # tworzymy nowy wezel
+        nowy: Node = Node()
+        # ustawiamy jego wartosc
+        nowy.value = value
+        # ustawiamy wskaznk (obecny pierwszy element ustawiamy na drugi)
+        nowy.next = self.head
+        # jezeli lista jest pusta (brak ostatniego elementu)
+        if self.tail is None:
+            self.tail = nowy
+        # ustawienie nowego wezla na pierwszy w liscie
+        self.head = nowy
+
+    # printuje liste
+    def __str__(self) -> str:
+        lista = ""
+        # wskaznik na poczatek listy
+        temp = self.head
+        # jezeli lista jest pusta
+        if temp is None:
+            return str(None)
+        # przechodzimy przez liste
+        while temp:
+            if temp.next is not None:
+                lista += str(temp.value) + ' -> '
+            else:
+                lista += str(temp.value)
+                # wskaznik na kolejny element
+            temp = temp.next
+        return lista
+
+    # umieszcza nowy węzeł na końcu listy
+    def append(self, value: Any) -> None:
+        # tworzymy nowy wezel
+        nowy: Node = Node()
+        # ustawiamy wartosc
+        nowy.value = value
+        # ustawiamy brak kolejnego elementu
+        nowy.next = None
+        # jezeli lista jest pusta
+        if self.head is None:
+            self.head = nowy
+        # wskaznik nastepnika ostatniego elementu ustawiamy na nasz nowy wezel
+        if self.tail:
+            self.tail.next = nowy
+        # ustawiamy wezel jako ostatni
+        self.tail = nowy
+
+    # zwróci węzeł znajdujący się na wskazanej pozycji
+    def node(self, at: int) -> Node:
+        # pusta lista
+        if self.head is None:
+            return None
+        # ustawiamy wskanik
+        tmp: Node = self.head
+        ile = 0
+        # szukamy podanej wartosci
+        while ile < at:
+            # jezeli nie ma takiej pozycji (lista za krótka)
+            if tmp.next is None:
+                return None
+            tmp = tmp.next
+            ile += 1
+        return tmp
+
+    # wstawia nowy węzeł tuż za węzłem wskazanym w parametrze
+    def insert(self, value: Any, after: Node) -> None:
+        # jezeli brak podanego wezla
+        if after is None:
+            return None
+        # tworzymy nowy wezel
+        nowy: Node = Node()
+        # ustawiamy jego wartosc
+        nowy.value = value
+        # jezeli podany wezel jest ostatnim
+        if after == self.tail:
+            after.next = nowy
+            self.tail = nowy
+        # wstawiamy wezel do listy
+        nowy.next = after.next
+        after.next = nowy
+
+    # usunie pierwszy element z listy i go zwróci
+    def pop(self) -> Node:
+        # wskanik na pierwszy element
+        nowy: Node = self.head
+        # ustawiamy drugi element na pierwszy
+        self.head = nowy.next
+        # usuwamy element
+        nowy.next = None
+        return nowy.value
+
+    # usunie ostatni element z listy i go zwróci
+    def remove_last(self) -> Node:
+        length = len(self)
+        # wskaznik na ostatni element
+        tmp: Node = self.tail
+        # jezeli jest tylko 1 element lub lista jest pusta
+        if length <= 1:
+            self.tail = None
+            self.head = None
+            return tmp
+        # ustawiamy nowy ostatni element
+        self.tail = self.node(len(self) - 2)
+        # ustawiamy pust nastepnik
+        self.tail.next = None
+        return tmp.value
+
+    # usunie z listy następnik węzła przekazanego w parametrze
+    def remove(self, after: Node) -> None:
+        # jezeli brak takiego elementu
+        if after is None:
+            return None
+        else:
+            # usuwamy nastepnik
+            self.tail = after
+            after.next = None
+
+    # wywołana na obiekcie listy zwróci jej długość
+    def __len__(self) -> int:
+        # wskaznik na poczatek
+        tmp = self.head
+        length = 0
+        # gdy lista jest pusta
+        if tmp is None:
+            return 0
+        # liczymy elementy
+        while tmp:
+            length = length + 1
+            tmp = tmp.next
+        return length
+
+
+class Stack(LinkedList):
+    def __len__(self) -> int:
+        # wskaznik na poczatek
+        tmp = self.head
+        length = 0
+        # gdy lista jest pusta
+        if tmp is None:
+            return 0
+        # liczymy elementy
+        while tmp:
+            length = length + 1
+            tmp = tmp.next
+        return length
+
+    def __str__(self) -> str:
+        lista = ""
+        # wskaznik na poczatek listy
+        temp = self.head
+        # jezeli lista jest pusta
+        if temp is None:
+            return str(None)
+        # przechodzimy przez liste
+        while temp is not None:
+            if temp.next is not None:
+                lista = lista + '||' + str(temp.value) + '||\n'
+            else:
+                lista = lista + '||' + str(temp.value) + '||'
+                # wskaznik na kolejny element
+            temp = temp.next
+        return lista
+
+
+class Queue(LinkedList):
+    def peek(self):
+        if self.head:
+            return self.head.value
+        else:
+            exit(-1)
+
+    def enqueue(self, element: Any):
+        node = Node(element)
+        if self.head is None:
+            self.head = None
+            self.tail = None
+        else:
+            self.tail.next = node
+            self.tail = node
+        self.count += 1
+
+
+stack = Stack()
+print(len(stack))
+stack.push(11)
+print(len(stack))
+print(stack.pop())
+print(len(stack))
+print("")
+stack.push(12)
+print(stack.pop())
+
+stack.push(13)
+stack.push(14)
+print(stack)
+print(len(stack))
+print(stack.pop())
+print(stack.pop())
