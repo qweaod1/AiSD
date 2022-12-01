@@ -1,0 +1,63 @@
+from enum import Enum
+from typing import Any,Optional,Dict,List
+
+class EdgeType(Enum):
+    directed = 1
+    undirected = 2
+
+class Vertex:
+    data: Any
+    index: int
+
+class Edge:
+    source: Vertex
+    destination: Vertex
+    weight: Optional[float]
+
+class Graph:
+    adjacencies: Dict[Vertex, List[Edge]]
+
+    def __init__(self):
+        self.adjacencies = {}
+
+    def create_vertex(self,data: Any):
+        new_vertex = Vertex()
+        new_vertex.data = data
+        new_vertex.index += 1
+        self.adjacencies = {new_vertex: []}
+
+    def add_directed_edge(self, source: Vertex, destination: Vertex, weight: Optional[float] = None):
+        if source not in Vertex.data:
+            self.create_vertex(source)
+        if destination not in Vertex.data:
+            self.create_vertex(destination)
+
+        self.adjacencies = {source: weight}
+        self.adjacencies = {destination: weight}
+
+    def add_undirected_edge(self, source: Vertex, destination: Vertex, weight: Optional[float] = None) -> None:
+        if source not in Vertex.data:
+            self.create_vertex(source)
+        if destination not in Vertex.data:
+            self.create_vertex(destination)
+
+        self.adjacencies = {source: weight, destination:weight}
+        self.adjacencies = {destination: weight, source: weight}
+
+    def add(self, edge: EdgeType, source: Vertex, destination: Vertex, weight: Optional[float] = None) -> None:
+        if edge == EdgeType.directed:
+            if source not in Vertex.data:
+                self.create_vertex(source)
+            if destination not in Vertex.data:
+                self.create_vertex(destination)
+
+            self.adjacencies = {source: weight, destination: weight}
+
+        if edge == EdgeType.undirected:
+            self.adjacencies = {source: None, destination: None}
+
+        def traverse_breadth_first(self, visit: Callable[[Any], None]) -> None:
+            if self.source == visit:
+                return self.source,self.destination
+            else:
+                exit(-1)
