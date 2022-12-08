@@ -1,1 +1,21 @@
+from enum import Enum
+from typing import Any,Optional,Dict,List
 
+class EdgeType(Enum):
+    directed = 1
+    undirected = 2
+
+class Vertex:
+    data: Any
+    index: int
+
+class Edge:
+    source: Vertex
+    destination: Vertex
+    weight: Optional[float]
+
+class Graph:
+    adjacencies: Dict[Vertex, List[Edge]]
+
+    def __init__(self):
+        self.adjacencies = {}
