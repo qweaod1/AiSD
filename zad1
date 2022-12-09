@@ -1,18 +1,64 @@
+import numbers
 from typing import Any
 
+def polocz(pimie: str, nazwisko: str):
+    new = f'{pimie}.{nazwisko}'
+    return new
 
-class Node:
-    value: Any
-    next: 'Node'
+
+print(polocz('J', 'Kowalski'))
 
 
-class LinkedList:
-    head: Node
-    tail: Node
+def polocz1(imie: str, nazwisko: str):
+    pier: str = imie[0].upper()
+    new = f'{pier}.{nazwisko}'
+    return new
 
-    def push(self, value: Any):
-        if self.head is None:
-            self.head = value
-    
-    def append(self,value: Any):
-        
+
+print(polocz1('jan', 'Kowalski'))
+
+
+def rok1(pierw: int, ostat: int, wiek: int):
+    rok = str(pierw) + str(ostat)
+    return int(rok) - wiek
+
+
+print(rok1(20, 22, 21))
+
+
+def polocz3(imie: str, nazwisko: str, polocz1):
+    return polocz1(imie, nazwisko)
+
+
+print(polocz3('jan', 'kowalski', polocz1))
+
+def dziel(liczba1, liczba2):
+    if liczba1 >= 0 and liczba2 > 0:
+        return liczba1/liczba2
+
+print(dziel(10, 2))
+
+i: float = 0
+while i < 100:
+    i += float(input('Podaje liczbe: '))
+    print(i)
+
+
+def listaa(lista: list):
+    return tuple(lista)
+
+print(listaa([3, 4, 'sed', 3.5]))
+
+lista: Any = []
+for i in range(1, 11):
+    dana = input('Podaj dane: ')
+    if dana.isnumeric():
+        lista.append(int(dana))
+    elif '.' in dana and dana.count('.') == 1:
+        lista.append(float(dana))
+    else:
+        lista.append(dana)
+
+print(tuple(lista))
+
+
