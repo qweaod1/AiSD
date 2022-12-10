@@ -1,0 +1,97 @@
+from typing import Any
+
+
+class tab_ros_g:
+    def __init__(self) -> None:
+        self.zajetosc = 0
+        self.pojemnosc = 2
+        self.dane = [None] * self.pojemnosc
+
+    def pobierz(self, idx: int) -> str:
+        if idx >= self.zajetosc:
+            return ''
+        return self.dane[idx]
+
+    def ustal(self, idx: int, wartosc: Any):
+        if idx > self.pojemnosc:
+            while self.pojemnosc < idx:
+                self.dane = self.dane + [None] * self.pojemnosc
+                self.pojemnosc = self.pojemnosc * 2
+            while self.zajetosc < idx:
+                self.dane[self.zajetosc] = ''
+                self.zajetosc += 1
+            self.dane[self.zajetosc] = str(wartosc)
+            self.zajetosc += 1
+        else:
+            while self.zajetosc < idx:
+                self.dane[self.zajetosc] = ''
+                self.zajetosc += 1
+            self.dane[self.zajetosc] = str(wartosc)
+            self.zajetosc += 1
+
+    def wstaw_przed(self, idx: int, wartosc: Any):
+        if idx == 0:
+            if self.zajetosc == self.pojemnosc:
+                self.dane = self.dane + [None] * self.pojemnosc
+                self.pojemnosc = self.pojemnosc * 2
+                self.zajetosc += 1
+                self.dane.pop(-1)
+                self.dane.insert(idx, str(wartosc))
+            else:
+                self.dane.pop(-1)
+                self.dane.insert(idx, str(wartosc))
+                self.zajetosc += 1
+        else:
+            if self.zajetosc == self.pojemnosc:
+                self.dane = self.dane + [None] * self.pojemnosc
+                self.pojemnosc = self.pojemnosc * 2
+                self.zajetosc += 1
+                self.dane.pop(-1)
+                self.dane.insert(idx - 1, str(wartosc))
+            else:
+                self.dane.pop(-1)
+                self.dane.insert(idx - 1, str(wartosc))
+                self.zajetosc += 1
+
+    def dodaj_za_koniec(self, wartosc):
+        if self.zajetosc == self.pojemnosc:
+            self.dane = self.dane + [None] * self.pojemnosc
+            self.pojemnosc = self.pojemnosc * 2
+
+        self.dane[self.zajetosc] = str(wartosc)
+        self.zajetosc += 1
+
+    def sortuj(self):
+        for i in range(self.zajetosc-1):
+            mini = i
+            for j in range(i+1, self.zajetosc):
+                if self.dane[j] < self.dane[mini]:
+                    mini = j
+                if i != mini:
+                    pom = self.dane[i]
+                    self.dane[i] = self.dane[mini]
+                    self.dane[mini] = pom
+
+    def print(self):
+        idx = 0
+        while idx < self.zajetosc:
+            print(self.dane[idx] + ";", end="")
+            idx += 1
+        print()
+
+
+a = tab_ros_g()
+a.print()
+a.dodaj_za_koniec(9)
+a.print()
+a.dodaj_za_koniec(8)
+a.dodaj_za_koniec(7)
+a.dodaj_za_koniec(6)
+a.dodaj_za_koniec(5)
+a.print()
+a.sortuj()
+a.print()
+a.wstaw_przed(2, 1)
+a.print()
+a.ustal(20, 1)
+a.print()
