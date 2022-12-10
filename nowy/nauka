@@ -1,0 +1,17 @@
+import random
+
+liczba = random.randint(1, 10)
+proba = int(input("Jaką liczbe mam na myśli? "))
+print("Podałeś liczbe:", proba)
+
+for i in range(3):
+    if proba == liczba:
+        print("Zgadłeś! Dostajesz długopis! \n")
+        break
+    elif i < 2:
+        print('Próba ', i + 1)
+        proba = int(input('Nie zgadłeś. Spróbuj jeszcze raz.\n'))
+    else:
+        print("Miałem na myśli liczbę: ", liczba)
+
+print("Wylosowana liczba to:", liczba)
