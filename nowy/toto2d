@@ -1,0 +1,19 @@
+from totomodul import ustawienia, losujliczby, pobierztyp, wynik
+
+def main(args):
+    nick, ileliczb, maksliczba, ilerazy = ustawienia()
+
+    liczby = losujliczby(ileliczb, maksliczba)
+
+    for i in range(ilerazy):
+        typy = pobierztyp(ileliczb, maksliczba)
+        iletraf = wynik(set(liczby), typy)
+
+        print("\n" + "x" * 40 + "\n")  # wydrukuj 40 znaków x
+
+    print("Wylosowane liczby:", liczby)
+    return 0
+
+if __name__ == '__main__':
+    import sys
+    sys.exit(main(sys.argv))
