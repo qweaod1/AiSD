@@ -1,0 +1,111 @@
+def numbers(n: int):
+    if n < 0:
+        return
+
+    print(f'n: {n}')
+    numbers(n - 1)
+
+
+numbers(10)
+
+
+def fib(n: int):
+    if n == 0 or n == 1:
+        return 1
+
+    return fib(n - 2) + fib(n - 1)
+
+
+print(fib(5))
+
+
+def power(number: int, n: int):
+    if n == 1:
+        return number
+
+    return number * power(number, n - 1)
+
+
+print(power(3, 4))
+
+
+def factorial(n: int):
+    if n == 1:
+        return 1
+
+    return n * factorial(n - 1)
+
+
+print(factorial(5))
+
+
+def prime(n: int, i=2):
+    if n == i:
+        return True
+    elif n % i == 0:
+        return False
+    return prime(n, i + 1)
+
+
+print(prime(5))
+
+
+def z7_reku(ciag_akt: list[int], ile_cyfr: int, tab_wyn: list[list[int]]):
+    pierwsza_cyfra: int
+    # print(ciag_akt)
+    if (len(ciag_akt) == ile_cyfr):
+        suma_c_pa = 0
+        suma_c_np = 0
+        for i in range(0, ile_cyfr, 2):
+            suma_c_pa += ciag_akt[i]
+        for i in range(1, ile_cyfr, 2):
+            suma_c_np += ciag_akt[i]
+        if (suma_c_pa == suma_c_np):  # czy ciąg jest ok?
+            tab_wyn.append(ciag_akt)
+            # print(' !! dodano: '+ str(ciag_akt))
+        return  # dalej nie rozwijaj
+    if (len(ciag_akt) == 0):
+        pierwsza_cyfra = 1
+    else:
+        pierwsza_cyfra = 0
+    for cyfra in range(pierwsza_cyfra, 10):
+        ciag_nowy = ciag_akt.copy()
+        ciag_nowy.append(cyfra)
+        z7_reku(ciag_nowy, ile_cyfr, tab_wyn)
+
+
+def z7_n_sums(n: int) -> list[int]:
+    tab_wyn = []
+    wyjscie = []
+    ciag_akt = []
+    assert (n >= 2)
+    z7_reku([], n, tab_wyn)
+    for ciag in tab_wyn:
+        liczba = 0
+        for c in ciag:
+            liczba = 10 * liczba + c
+        wyjscie.append(liczba)
+    return wyjscie
+
+
+def lista(n: int):
+    if n == 1:
+        return n
+    return str(n) + str(lista(n - 1))
+
+
+def combinations(n: int):
+    tablica = lista(n) + lista(n)
+    tablica = list(tablica)
+    for i in range(len(tablica)):
+        for j in range(len(tablica)):
+            if tablica[i] == tablica[j] and j - i != int(tablica[i]) + 1 and i != j:
+                liczba = int(tablica[i])
+                pomoc = tablica[liczba + 1]
+                tablica[liczba + 1] = tablica[j]
+                tablica[j] = pomoc
+
+    print(tablica)
+
+
+print(combinations(3))
