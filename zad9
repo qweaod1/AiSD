@@ -1,0 +1,165 @@
+    for i in range(len(tab)):
+        print(tab[i], end='|')
+
+
+def select_sort(tab):
+    for i in range(len(tab) - 1):
+        mini = i
+        for j in range(i + 1, len(tab)):
+            if tab[j] < tab[mini]:
+                mini = j
+        if i != mini:
+            pom = tab[i]
+            tab[i] = tab[mini]
+            tab[mini] = pom
+
+    for i in range(len(tab)):
+        print(tab[i], end='|')
+
+
+def insertion_sort(tab):
+    for k in range(1, len(tab)):
+        key = tab[k]
+        y = k - 1
+        while y >= 0 and key < tab[y]:
+            tab[y + 1] = tab[y]
+            y -= 1
+            tab[y + 1] = key
+
+    for i in range(len(tab)):
+        print(tab[i], end='|')
+
+
+tab = [6, 1, 7, 3, 4, 9, 2, 5, 8, 0]
+bubble_sort(tab)
+print('\n')
+select_sort(tab)
+print('\n')
+insertion_sort(tab)
+
+def bubble_sort1(tab):
+    maks = tab[0]
+    for i in range(len(tab)):
+        for j in range(i + 1, len(tab)):
+            if tab[i] < tab[j]:
+                maks = tab[j]
+                tab[j] = tab[i]
+                tab[i] = maks
+
+    for i in range(len(tab)):
+        print(tab[i], end='|')
+
+
+def select_sort1(tab):
+    for i in range(len(tab) - 1):
+        maks = i
+        for j in range(i + 1, len(tab)):
+            if tab[j] > tab[maks]:
+                maks = j
+        if i != maks:
+            pom = tab[i]
+            tab[i] = tab[maks]
+            tab[maks] = pom
+
+    for i in range(len(tab)):
+        print(tab[i], end='|')
+
+
+def insertion_sort1(tab):
+    for k in range(1, len(tab)):
+        key = tab[k]
+        y = k - 1
+        while y >= 0 and key > tab[y]:
+            tab[y + 1] = tab[y]
+            y -= 1
+            tab[y + 1] = key
+
+    for i in range(len(tab)):
+        print(tab[i], end='|')
+
+
+tab = [6, 1, 7, 3, 4, 9, 2, 5, 8, 0]
+print('\n')
+bubble_sort1(tab)
+print('\n')
+select_sort1(tab)
+print('\n')
+insertion_sort1(tab)
+
+
+def bubble_sort2(tab, kol):
+    maks = tab[0]
+    for i in range(len(tab)):
+        for j in range(i + 1, len(tab)):
+            if kol == 1:
+                if tab[i] < tab[j]:
+                    maks = tab[j]
+                    tab[j] = tab[i]
+                    tab[i] = maks
+            elif kol == 0:
+                if tab[i] > tab[j]:
+                    maks = tab[j]
+                    tab[j] = tab[i]
+                    tab[i] = maks
+
+    for i in range(len(tab)):
+        print(tab[i], end='|')
+
+
+def select_sort2(tab, kol):
+    for i in range(len(tab) - 1):
+        maks = i
+        if kol == 1:
+            for j in range(i + 1, len(tab)):
+                if tab[j] > tab[maks]:
+                    maks = j
+            if i != maks:
+                pom = tab[i]
+                tab[i] = tab[maks]
+                tab[maks] = pom
+        if kol == 0:
+            for j in range(i + 1, len(tab)):
+                if tab[j] < tab[maks]:
+                    maks = j
+            if i != maks:
+                pom = tab[i]
+                tab[i] = tab[maks]
+                tab[maks] = pom
+
+    for i in range(len(tab)):
+        print(tab[i], end='|')
+
+
+def insertion_sort2(tab, kol):
+    for k in range(1, len(tab)):
+        key = tab[k]
+        y = k - 1
+        if kol == 1:
+            while y >= 0 and key > tab[y]:
+                tab[y + 1] = tab[y]
+                y -= 1
+                tab[y + 1] = key
+
+        elif kol == 0:
+            while y >= 0 and key < tab[y]:
+                tab[y + 1] = tab[y]
+                y -= 1
+                tab[y + 1] = key
+
+    for i in range(len(tab)):
+        print(tab[i], end='|')
+
+tab1 = [6, 1, 7, 3, 4, 9, 2, 5, 8, 0]
+print('\n')
+kol = 0
+insertion_sort2(tab1, kol)
+
+tab1 = [6, 1, 7, 3, 4, 9, 2, 5, 8, 0]
+print('\n')
+kol = 0
+select_sort2(tab1, kol)
+
+tab1 = [6, 1, 7, 3, 4, 9, 2, 5, 8, 0]
+print('\n')
+kol = 0
+bubble_sort2(tab1, kol)
