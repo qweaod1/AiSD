@@ -56,7 +56,7 @@ class Tree:
         parent_name.children.append(TreeNode(value))
 
     def for_each_level_order(self, visit: Callable[['TreeNode'], None]):
-        self.root.for_each_deep_first(visit)
+        self.root.for_each_level_order(visit)
 
     def for_each_deep_first(self, visit: Callable[['TreeNode'], None]):
         self.root.for_each_deep_first(visit)
