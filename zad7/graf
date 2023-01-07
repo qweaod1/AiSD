@@ -1,18 +1,33 @@
-from enum import Enum
-from typing import Any,Optional,Dict,List
-
 class EdgeType(Enum):
     directed = 1
     undirected = 2
+
 
 class Vertex:
     data: Any
     index: int
 
+    def __init__(self, data: Any, index: int):
+        self.data = data
+        self.index = index
+
+    def __str__(self) -> str:
+        return str(self.index) + ":" + str(self.data)
+
+
 class Edge:
     source: Vertex
     destination: Vertex
     weight: Optional[float]
+
+    def __init__(self, source: Vertex, destination: Vertex, weigth: Optional[float]):
+        self.source = source
+        self.destination = destination
+        self.weight = weigth
+
+    def __repr__(self) -> str:
+        return str(self.destination)
+
 
 class Graph:
     adjacencies: Dict[Vertex, List[Edge]]
@@ -20,44 +35,90 @@ class Graph:
     def __init__(self):
         self.adjacencies = {}
 
-    def create_vertex(self,data: Any):
-        new_vertex = Vertex()
-        new_vertex.data = data
-        new_vertex.index += 1
-        self.adjacencies = {new_vertex: []}
+    def create_vertex(self, data: Any):
+        new = Vertex(data, len(self.adjacencies))
+        self.adjacencies[new] = list()
+        return new
 
-    def add_directed_edge(self, source: Vertex, destination: Vertex, weight: Optional[float] = None):
-        if source not in Vertex.data:
-            self.create_vertex(source)
-        if destination not in Vertex.data:
-            self.create_vertex(destination)
+    def __repr__(self):
+        lista = ''
+        for x in self.adjacencies:
+            lista += f'-- {x} ---> {self.adjacencies[x]}\n'
+        return lista
 
-        self.adjacencies = {source: weight}
-        self.adjacencies = {destination: weight}
+    def add_directed_edge(self, source: Vertex, destination: Vertex, weigth: Optional[float] = None):
+        new = Edge(source, destination, weigth)
+        self.adjacencies[source].append(new)
 
-    def add_undirected_edge(self, source: Vertex, destination: Vertex, weight: Optional[float] = None) -> None:
-        if source not in Vertex.data:
-            self.create_vertex(source)
-        if destination not in Vertex.data:
-            self.create_vertex(destination)
+    def add_undirected_edge(self, source: Vertex, destination: Vertex, weigth: Optional[float] = None):
+        self.add_directed_edge(source, destination, weigth)
+        self.add_directed_edge(destination, source, weigth)
 
-        self.adjacencies = {source: weight, destination:weight}
-        self.adjacencies = {destination: weight, source: weight}
+    def add(self, edge: EdgeType, source: Vertex, destinatnion: Vertex, weigth: Optional[float] = None):
+        if edge == edge.directed:
+            self.add_directed_edge(source, destinatnion, weigth)
+        else:
+            self.add_undirected_edge(source, destinatnion, weigth)
 
-    def add(self, edge: EdgeType, source: Vertex, destination: Vertex, weight: Optional[float] = None) -> None:
-        if edge == EdgeType.directed:
-            if source not in Vertex.data:
-                self.create_vertex(source)
-            if destination not in Vertex.data:
-                self.create_vertex(destination)
+    def traverse_breadth_first(self, visit: Callable[[Any], None]):
+        first = list(self.adjacencies.keys())[0]                        
+        odwiedzone = []        
+        q = [first]
 
-            self.adjacencies = {source: weight, destination: weight}
+        while q:
+            v = q.pop()
+            if v in odwiedzone:
+                continue            
+            
+            odwiedzone.append(v)
+            visit(v)
+                        
+            for e in self.adjacencies[v]:
+                q.insert(0, e.destination)
 
-        if edge == EdgeType.undirected:
-            self.adjacencies = {source: None, destination: None}
+    def traverse_depth_first(self, visit: Callable[[Any], None]):
+        
+        def dfs(v: Vertex, visited: List[Vertex], visit: Callable[[Any], None]):
+            visited.append(v)
+            visit(v)
+            
+            for e in self.adjacencies[v]:
+                if e.destination not in visited:
+                    dfs(e.destination, visited, visit)
+        
+        first = list(self.adjacencies.keys())[0]  
+        visited = []
+        
+        dfs(first, visited, visit)
+    
+    @staticmethod
+    def wypisz(lista):
+        for i in graf1.adjacencies:
+            print(f'{i.index}: {i.data}')
 
-        def traverse_breadth_first(self, visit: Callable[[Any], None]) -> None:
-            if self.source == visit:
-                return self.source,self.destination
-            else:
-                exit(-1)
+
+graf1 = Graph()
+A = graf1.create_vertex('A')
+B = graf1.create_vertex('B')
+C = graf1.create_vertex('C')
+D = graf1.create_vertex('D')
+E = graf1.create_vertex('E')
+
+
+graf1.add(EdgeType.undirected, A, B)
+graf1.add(EdgeType.undirected, A, C)
+graf1.add(EdgeType.undirected, C, D)
+graf1.add(EdgeType.undirected, A, E)
+
+
+print('-------------')
+for i in graf1.adjacencies:
+    print(f'{i.index}: {i.data}')
+
+print(graf1)
+
+graf1.traverse_breadth_first(lambda v: print(v))
+print()
+graf1.traverse_depth_first(lambda v: print(v))
+
+
