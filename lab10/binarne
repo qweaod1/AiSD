@@ -1,0 +1,21 @@
+from array import array
+from ctypes import Array
+from typing import Tuple
+
+
+def binary_search(tablica, high, low, value: int):
+
+    mid = (high+low)//2
+    while low <= high:
+        if tablica[mid] == value:
+            return mid
+        elif tablica[mid] < value:
+            return binary_search(tablica, high+1, low, value)
+        else:
+            return binary_search(tablica, low+1, low, value)
+
+    return False
+
+
+tablica = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+print(binary_search(tablica, len(tablica)-1, 0, 4))
