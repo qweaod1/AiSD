@@ -1,0 +1,94 @@
+from PIL import Image
+import numpy as np
+
+inicjaly = Image.open("inicialy.bmp")
+
+
+# zad1
+def rysuj_ramke_w_obrazie(obraz, grub):
+    obraz_wstawiany = np.asarray(obraz) * 1
+    h, w = obraz_wstawiany.shape
+    for i in range(h):
+        for j in range(grub):
+            obraz_wstawiany[i][j] = 0
+        for j in range(w - grub, w):
+            obraz_wstawiany[i][j] = 0
+    for i in range(w):
+        for j in range(grub):
+            obraz_wstawiany[j][i] = 0
+        for j in range(h - grub, h):
+            obraz_wstawiany[j][i] = 0
+
+    tab = obraz_wstawiany.astype(bool)
+    return Image.fromarray(tab)
+
+
+# zad2
+
+inicjaly_ramka = rysuj_ramke_w_obrazie(inicjaly, 10)
+inicjaly_ramka.save('ramka10.bmp')
+inicjaly_ramka = rysuj_ramke_w_obrazie(inicjaly, 5)
+inicjaly_ramka.save('ramka5.bmp')
+
+# zad3
+
+# 1.1
+
+def rysuj_ramke(w, h, grub):
+    t = (h, w)
+    tab = np.zeros(t, dtype=np.uint8)
+
+    for j in range(int(min(w, h)/grub)):
+        tab[j*grub:h - j*grub, j*grub:w - j*grub] = j % 2
+
+    tab1 = tab.astype(np.bool_)
+    return tab1
+
+tab = rysuj_ramke(120, 60, 6)
+print("typ danych tablicy", tab.dtype)
+print("rozmiar wyrazu tablicy:", tab.itemsize)
+im_ramka = Image.fromarray(tab)
+im_ramka.show()
+
+# 1.2
+
+def rysuj_pasy_pionowe(w, h, grub):
+    t = (h, w)
+    tab = np.ones(t, dtype=np.uint8)
+
+    ile = int(w / grub)
+    for k in range(ile):
+        for g in range(grub):
+            i = k * grub + g
+            for j in range(h):
+                tab[j, i] = k % 2
+    tab = tab * 255
+    return Image.fromarray(tab)
+
+
+obraz = rysuj_pasy_pionowe(180, 100, 22)
+
+obraz.show()
+
+#1.3
+
+def wstaw_obraz(w, h, m, n, obraz):  # w,h rozmiary nowego obrazu, m<=w,  n<=h (m,n miejsce wstawienia obrazu )
+    tab_obraz = np.asarray(obraz) * 1
+    h0, w0 = tab_obraz.shape
+    t = (h, w)  # rozmiar tablicy nowego obrazu
+    tab = np.ones(t, dtype=np.uint8)  # deklaracja tablicy wypełnionej jedynkami - biała
+    n_k = min(h, n + h0)  # jesli wstawiany obraz wychodzi poza ramy nowego obrazu, to przycinamy
+    m_k = min(w, m + w0)  # jesli wstawiany obraz wychodzi poza ramy nowego obrazu, to przycinamy
+    n_p = max(0, n)  # jesli miejsce wstawienia jest ujemne(wychodzi poza nowy obraz w górę), to przycinamy
+    m_p = max(0, m)  # jesli miejsce wstawienia jest ujemne(wychodzi poza nowy obraz w lewo), to przycinamy
+    print(n_k, m_k)
+    print(n_p, m_p)
+    for i in range(n_p, n_k):
+        for j in range(m_p, m_k):
+            tab[i][j] = tab_obraz[i - n][j - m]
+    tab = tab.astype(bool)  # zapisanie tablicy w typie bool (obrazy czarnobiałe)
+    return Image.fromarray(tab)
+
+
+obr = wstaw_obraz(120, 60, 0, 0, inicjaly)
+obr.show()
